@@ -85,7 +85,10 @@ public abstract class Veiculo {
 		this.cor = cor;
 	}
 
-	public final void setVelocMaxima(float velocMaxima) {
+	public final void setVelocMaxima(float velocMaxima) throws VelocException {
+		if(velocMaxima < 80 || velocMaxima > 110) {
+			throw new VelocException();
+		}
 		this.velocMaxima = velocMaxima;
 	}
 

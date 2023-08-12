@@ -37,10 +37,18 @@ public class Teste {
 			
 			switch(opcao) {			
 				case 1:
-					cadastraNovoVeiculoPorTipo(TipoVeiculo.PASSEIO, listaPasseio);
+					try {
+						cadastraNovoVeiculoPorTipo(TipoVeiculo.PASSEIO, listaPasseio);						
+					} catch (VeicExistException excecao) {
+						System.out.println("\n" + excecao.getMessage());					
+					}
 					break;
 				case 2:
-					cadastraNovoVeiculoPorTipo(TipoVeiculo.CARGA, listaCarga);
+					try {
+						cadastraNovoVeiculoPorTipo(TipoVeiculo.CARGA, listaCarga);						
+					} catch (VeicExistException excecao) {
+						System.out.println("\n" + excecao.getMessage());
+					}
 					break;
 				case 3:
 					imprimeTodosVeiculosPorTipo(TipoVeiculo.PASSEIO, listaPasseio);
@@ -67,7 +75,7 @@ public class Teste {
 
 	} // fim main
 	
-	public static void cadastraNovoVeiculoPorTipo(TipoVeiculo tipoVeiculo, Veiculo[] listaVeiculo) {
+	public static void cadastraNovoVeiculoPorTipo(TipoVeiculo tipoVeiculo, Veiculo[] listaVeiculo) throws VeicExistException {
 		String tipo = TipoVeiculo.PASSEIO.equals(tipoVeiculo) ? "PASSEIO" : "CARGA"; 
 		boolean cadastrarNovoVeiculo = true;
 		while(cadastrarNovoVeiculo) {
@@ -76,8 +84,9 @@ public class Teste {
 				System.out.println("\n----------- Cadastro de veículo de " + tipo + " ----------\n");
 				String placa = leitura.entDados("Placa: ");
 				if(encontraPlaca(placa, listaVeiculo)){					
-					System.out.println("\nATENÇÃO: Já existe um veículo de " + tipo + " cadastrado com a placa '" + placa + "'.");
-					cadastrarNovoVeiculo = false;
+//					System.out.println("\nATENÇÃO: Já existe um veículo de " + tipo + " cadastrado com a placa '" + placa + "'.");
+//					cadastrarNovoVeiculo = false;
+					throw new VeicExistException();
 				} else {
 					
 					Veiculo veiculo = TipoVeiculo.PASSEIO.equals(tipoVeiculo) ? formularioPasseio(placa) : formularioCarga(placa);					
@@ -133,7 +142,17 @@ public class Teste {
 		passeio.setModelo(leitura.entDados("Modelo: "));		
 		passeio.setPlaca(placa);
 		passeio.setCor(leitura.entDados("Cor: "));
-		passeio.setVelocMaxima(Float.parseFloat(leitura.entDados("Velocidade Máxima")));
+		try {
+			passeio.setVelocMaxima(Float.parseFloat(leitura.entDados("Velocidade Máxima")));			
+		} catch(VelocException excecao){
+			System.out.println(excecao.getMessage());
+			System.out.println("Será automaticamente atribuída uma velocidade máxima válida de 100 Km/h.\n");
+			try {
+				passeio.setVelocMaxima(100f);
+			} catch (VelocException excecao2) {
+				System.out.println(excecao2.getMessage());
+			}
+		}
 		passeio.setQtdRodas(Integer.parseInt(leitura.entDados("Quantidade de Rodas: ")));
 		passeio.getMotor().setQtdPist(Integer.parseInt(leitura.entDados("Quantidade de Pistões do Motor: ")));
 		passeio.getMotor().setPotencia(Integer.parseInt(leitura.entDados("Potência do Motor: ")));
@@ -147,7 +166,19 @@ public class Teste {
 		carga.setModelo(leitura.entDados("Modelo: "));				
 		carga.setPlaca(placa);
 		carga.setCor(leitura.entDados("Cor: "));
-		carga.setVelocMaxima(Float.parseFloat(leitura.entDados("Velocidade Máxima")));
+		
+		try {
+			carga.setVelocMaxima(Float.parseFloat(leitura.entDados("Velocidade Máxima")));		
+		}catch (VelocException excecao) {
+			System.out.println(excecao.getMessage());
+			System.out.println("Será automaticamente atribuída uma velocidade máxima válida de 90 Km/h.\n");
+			try {
+				carga.setVelocMaxima(90f);				
+			}catch (VelocException excecao2) {
+				System.out.println(excecao2.getMessage());
+			}
+		}
+		
 		carga.setQtdRodas(Integer.parseInt(leitura.entDados("Quantidade de Rodas: ")));
 		carga.getMotor().setQtdPist(Integer.parseInt(leitura.entDados("Quantidade de Pistões do Motor: ")));
 		carga.getMotor().setPotencia(Integer.parseInt(leitura.entDados("Potência do Motor: ")));
