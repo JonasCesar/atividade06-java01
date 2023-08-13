@@ -1,12 +1,11 @@
 
 public class Teste {	
 	
-	private static Passeio listaPasseio[] = new Passeio[5];
-	private static Carga listaCarga[] = new Carga[5];
-	
 	private static Leitura leitura = new Leitura();
 
 	public static void main(String[] args) {
+		
+		BDVeiculos bdVeiculos = new BDVeiculos();
 		
 		boolean continua = true;
 		int opcao = 0;
@@ -38,29 +37,29 @@ public class Teste {
 			switch(opcao) {			
 				case 1:
 					try {
-						cadastraNovoVeiculoPorTipo(TipoVeiculo.PASSEIO, listaPasseio);						
+						cadastraNovoVeiculoPorTipo(TipoVeiculo.PASSEIO, BDVeiculos.getListaPasseio());						
 					} catch (VeicExistException excecao) {
 						System.out.println("\n" + excecao.getMessage());					
 					}
 					break;
 				case 2:
 					try {
-						cadastraNovoVeiculoPorTipo(TipoVeiculo.CARGA, listaCarga);						
+						cadastraNovoVeiculoPorTipo(TipoVeiculo.CARGA, BDVeiculos.getListaCarga());						
 					} catch (VeicExistException excecao) {
 						System.out.println("\n" + excecao.getMessage());
 					}
 					break;
 				case 3:
-					imprimeTodosVeiculosPorTipo(TipoVeiculo.PASSEIO, listaPasseio);
+					imprimeTodosVeiculosPorTipo(TipoVeiculo.PASSEIO, BDVeiculos.getListaPasseio());
 					break;
 				case 4:
-					imprimeTodosVeiculosPorTipo(TipoVeiculo.CARGA, listaCarga);
+					imprimeTodosVeiculosPorTipo(TipoVeiculo.CARGA, BDVeiculos.getListaCarga());
 					break;
 				case 5:
-					imprimirVeiculoPelaPlaca(TipoVeiculo.PASSEIO, listaPasseio);
+					imprimirVeiculoPelaPlaca(TipoVeiculo.PASSEIO, BDVeiculos.getListaPasseio());
 					break;
 				case 6:
-					imprimirVeiculoPelaPlaca(TipoVeiculo.CARGA, listaCarga);
+					imprimirVeiculoPelaPlaca(TipoVeiculo.CARGA, BDVeiculos.getListaCarga());
 					break;
 				case 7:
 					System.out.println("Finalizando sistema...");
@@ -83,9 +82,7 @@ public class Teste {
 			if(i != -1) {		
 				System.out.println("\n----------- Cadastro de veículo de " + tipo + " ----------\n");
 				String placa = leitura.entDados("Placa: ");
-				if(encontraPlaca(placa, listaVeiculo)){					
-//					System.out.println("\nATENÇÃO: Já existe um veículo de " + tipo + " cadastrado com a placa '" + placa + "'.");
-//					cadastrarNovoVeiculo = false;
+				if(encontraPlaca(placa, listaVeiculo)){						
 					throw new VeicExistException();
 				} else {
 					
