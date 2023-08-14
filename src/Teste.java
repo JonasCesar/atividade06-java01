@@ -142,7 +142,7 @@ public class Teste {
 		try {
 			passeio.setVelocMaxima(Float.parseFloat(leitura.entDados("Velocidade Máxima")));			
 		} catch(VelocException excecao){
-			System.out.println(excecao.getMessage());
+			System.out.println("\n" + excecao.getMessage());
 			System.out.println("Será automaticamente atribuída uma velocidade máxima válida de 100 Km/h.\n");
 			try {
 				passeio.setVelocMaxima(100f);
@@ -167,7 +167,7 @@ public class Teste {
 		try {
 			carga.setVelocMaxima(Float.parseFloat(leitura.entDados("Velocidade Máxima")));		
 		}catch (VelocException excecao) {
-			System.out.println(excecao.getMessage());
+			System.out.println("\n" + excecao.getMessage());
 			System.out.println("Será automaticamente atribuída uma velocidade máxima válida de 90 Km/h.\n");
 			try {
 				carga.setVelocMaxima(90f);				
